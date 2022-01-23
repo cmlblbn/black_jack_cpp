@@ -28,7 +28,6 @@
     </property>
     <property name="font">
      <font>
-      <family>Algerian</family>
       <pointsize>20</pointsize>
      </font>
     </property>
@@ -39,7 +38,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="player_name_input">
     <property name="geometry">
      <rect>
       <x>330</x>

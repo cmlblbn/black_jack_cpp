@@ -7,10 +7,10 @@
 class Pod
 {
 private:
-    int const size_limit = 6; // maximum card count
+    int const size_limit = 5; // maximum card count
     QString m_pod_name;
     std::vector<Card> m_pod_Cards;
-    int m_pod_count;
+    int m_pod_count = 0;
     int m_score = 0;
 
 public:
@@ -36,6 +36,7 @@ public:
     //when user add a card in the pod, we need the update this pod
 
     void resetPod();
+    QString getPodCardsName();
     //if you get a score or fail, we need the clear this pod
 
 

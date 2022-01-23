@@ -27,7 +27,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -39,7 +38,7 @@ color:rgb(0,0,0);</string>
     <string>ADD</string>
    </property>
   </widget>
-  <widget class="QLabel" name="pod_1">
+  <widget class="QLabel" name="pod1_canvas">
    <property name="geometry">
     <rect>
      <x>100</x>
@@ -49,13 +48,14 @@ color:rgb(0,0,0);</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 0, 0);</string>
+    <string notr="true">background-color: rgb(0, 0, 0);
+color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="pod_2">
+  <widget class="QLabel" name="pod2_canvas">
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -65,7 +65,8 @@ color:rgb(0,0,0);</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 0, 0);</string>
+    <string notr="true">background-color: rgb(0, 0, 0);
+color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string/>
@@ -82,7 +83,6 @@ color:rgb(0,0,0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -104,7 +104,6 @@ color:rgb(0,0,0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -126,7 +125,6 @@ color:rgb(0,0,0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -137,7 +135,7 @@ color:rgb(0,0,0);</string>
     <string>pod 3</string>
    </property>
   </widget>
-  <widget class="QLabel" name="pod_3">
+  <widget class="QLabel" name="pod3_canvas">
    <property name="geometry">
     <rect>
      <x>500</x>
@@ -147,7 +145,8 @@ color:rgb(0,0,0);</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 0, 0);</string>
+    <string notr="true">background-color: rgb(0, 0, 0);
+color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string/>
@@ -164,7 +163,6 @@ color:rgb(0,0,0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -386,7 +384,6 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -398,7 +395,7 @@ color: rgb(0, 0, 0);</string>
     <string>ADD</string>
    </property>
   </widget>
-  <widget class="QLabel" name="score_value">
+  <widget class="QLabel" name="mainScore_value">
    <property name="geometry">
     <rect>
      <x>700</x>
@@ -409,7 +406,6 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>24</pointsize>
     </font>
    </property>
@@ -428,7 +424,6 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -436,7 +431,7 @@ color: rgb(0, 0, 0);</string>
     <string notr="true">color:rgb(255,255,255);</string>
    </property>
    <property name="text">
-    <string>Time: hh-mm-ss</string>
+    <string>Time: Oyunu Başlat</string>
    </property>
   </widget>
   <widget class="QLabel" name="deck_image">
@@ -467,7 +462,6 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>24</pointsize>
     </font>
    </property>
@@ -490,7 +484,6 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="font">
     <font>
-     <family>Algerian</family>
      <pointsize>16</pointsize>
     </font>
    </property>
@@ -545,6 +538,106 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string>+</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Status_1">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>50</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>get a Score</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Status_2">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>50</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>get a Score</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Status_3">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>50</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>get a Score</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pod1_score">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>390</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Score:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pod2_score">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>390</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Score:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pod3_score">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>390</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Score:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="startButton">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>40</y>
+     <width>225</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(252,174,1,255);
+color: rgb(0, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>START GAME</string>
    </property>
   </widget>
  </widget>

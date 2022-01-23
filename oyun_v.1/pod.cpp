@@ -14,7 +14,7 @@ Pod::Pod(QString pod_name)
 
 void Pod::mPodPushCard(Card card)
 {
-    if(this->m_pod_count <= this->size_limit){
+    if(this->m_pod_count < this->size_limit){
         this->m_pod_Cards.push_back(card);
         this->updatePodCount();
         this->m_score = this->m_score + this->updateScore();
@@ -47,4 +47,13 @@ void Pod::resetPod()
     this->m_score = this->updateScore();
     this->updatePodCount();
 
+}
+
+QString Pod::getPodCardsName()
+{
+    QString CardNames = "";
+    for(auto card: this->m_pod_Cards){
+        CardNames = CardNames + card.getCardName() + " \n";
+    }
+    return CardNames;
 }
