@@ -30,12 +30,21 @@ public:
     void setSpades(QString absolutePath);
     void setSpecial(QString absolutePath);
     void setPods();
-    bool makeDecision(QLabel* status,Pod &pod_score);
+    void setPodsCanvas();
+    bool makeDecision(QLabel* label,Pod &pod);
     void setMainScore(int const mainScore){this->m_mainScore = mainScore;}
     void increaseMainScore(int score){this->m_mainScore = this->m_mainScore + score;}
     int getMainScore(){return this->m_mainScore;}
+    bool isBlackJack(Pod &pod);
+    bool isWin(Pod &pod);
+    bool isLose(Pod &pod);
+    void ShowWin(QLabel* label);
+    void ShowLose(QLabel* label);
+    void drawPod(int pod);
+    void clearPod(int pod);
     bool isGameFinish();
     void restartGame();
+
 private slots:
     void on_finishButton_clicked();
 
@@ -62,6 +71,9 @@ private:
     Pod first_pod = Pod("İlk Pod");
     Pod second_pod = Pod("İkinci Pod");
     Pod third_pod = Pod("üçüncü Pod");
+    QLabel *pod_canvas1[5];
+    QLabel *pod_canvas2[5];
+    QLabel *pod_canvas3[5];
     int m_mainScore = 0;
     QString player_name;
     Ui::PlayedGame *ui;

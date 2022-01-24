@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <QRegularExpression>
 
 PlayedGame::PlayedGame(QString player_name,QWidget *parent) :
     QWidget(parent),
@@ -13,8 +13,9 @@ PlayedGame::PlayedGame(QString player_name,QWidget *parent) :
 {
     ui->setupUi(this);
     this->setGameDeck();
+    this->setPodsCanvas();
     qDebug() << this->m_Deck.getDeckCount();
-    ui->deck_counter->setText("ALL DECK \nSİZE:" + QString::number(this->m_Deck.getDeckCount()));
+    ui->deck_counter->setText("  ALL    DECK \n      SİZE: " + QString::number(this->m_Deck.getDeckCount()));
     ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
     this->setAllButtonDisabled();
     this->player_name = player_name;
@@ -53,6 +54,7 @@ void PlayedGame::setGameDeck()
     this->setHearths(absolutePath);
     this->setSpades(absolutePath);
     this->setSpecial(absolutePath);
+    this->m_Deck.ShuffleCards();
     this->m_Deck.ShuffleCards();
 
     // Kart destesi generate edip Desteği karıştırmak için gerekli fonksiyon
@@ -173,70 +175,206 @@ void PlayedGame::setSpades(QString absolutePath)
 void PlayedGame::setSpecial(QString absolutePath)
 {
     //Özel kartları burada deck içine yükleyeceğiz.
-    Card jokerClubs = Card("Clubs","Sinek - JOKER", 10 ,absolutePath + QString("/JC.png"));
+    Card jokerClubs = Card("Special","Sinek - JOKER", 10 ,absolutePath + QString("/JC.png"));
     this->m_Deck.mDeckPushCard(jokerClubs);
-    Card jokerDiamond = Card("Diamond","Karo - JOKER", 10 ,absolutePath + QString("/JD.png"));
+    Card jokerDiamond = Card("Special","Karo - JOKER", 10 ,absolutePath + QString("/JD.png"));
     this->m_Deck.mDeckPushCard(jokerDiamond);
-    Card jokerHearth = Card("Hearth","Kupa - JOKER", 10 ,absolutePath + QString("/JH.png"));
+    Card jokerHearth = Card("Special","Kupa - JOKER", 10 ,absolutePath + QString("/JH.png"));
     this->m_Deck.mDeckPushCard(jokerHearth);
-    Card jokerSpade = Card("Spade","Maça - JOKER", 10 ,absolutePath + QString("/JS.png"));
+    Card jokerSpade = Card("Special","Maça - JOKER", 10 ,absolutePath + QString("/JS.png"));
     this->m_Deck.mDeckPushCard(jokerSpade);
     // Joker kartları eklendi
 
-    Card kingClubs = Card("Clubs","Sinek - PAPAZ", 10 ,absolutePath + QString("/KC.png"));
+    Card kingClubs = Card("Special","Sinek - PAPAZ", 10 ,absolutePath + QString("/KC.png"));
     this->m_Deck.mDeckPushCard(kingClubs);
-    Card kingDiamond = Card("Diamond","Karo - PAPAZ", 10 ,absolutePath + QString("/KD.png"));
+    Card kingDiamond = Card("Special","Karo - PAPAZ", 10 ,absolutePath + QString("/KD.png"));
     this->m_Deck.mDeckPushCard(kingDiamond);
-    Card kingHearth = Card("Hearth","Kupa - PAPAZ", 10 ,absolutePath + QString("/KH.png"));
+    Card kingHearth = Card("Special","Kupa - PAPAZ", 10 ,absolutePath + QString("/KH.png"));
     this->m_Deck.mDeckPushCard(kingClubs);
-    Card kingSpade = Card("Spade","Maça - PAPAZ", 10 ,absolutePath + QString("/KS.png"));
+    Card kingSpade = Card("Special","Maça - PAPAZ", 10 ,absolutePath + QString("/KS.png"));
     this->m_Deck.mDeckPushCard(kingSpade);
     //Papaz kartları eklendi
 
-    Card queenClubs = Card("Clubs","Sinek - KIZ", 10 ,absolutePath + QString("/QC.png"));
+    Card queenClubs = Card("Special","Sinek - KIZ", 10 ,absolutePath + QString("/QC.png"));
     this->m_Deck.mDeckPushCard(kingClubs);
-    Card queenDiamond = Card("Diamond","Karo - KIZ", 10 ,absolutePath + QString("/QD.png"));
+    Card queenDiamond = Card("Special","Karo - KIZ", 10 ,absolutePath + QString("/QD.png"));
     this->m_Deck.mDeckPushCard(queenDiamond);
-    Card queenHearth = Card("Hearth","Kupa - KIZ", 10 ,absolutePath + QString("/QH.png"));
+    Card queenHearth = Card("Special","Kupa - KIZ", 10 ,absolutePath + QString("/QH.png"));
     this->m_Deck.mDeckPushCard(queenHearth);
-    Card queenSpade = Card("Spade","Maça - KIZ", 10 ,absolutePath + QString("/KC.png"));
+    Card queenSpade = Card("Special","Maça - KIZ", 10 ,absolutePath + QString("/KC.png"));
     this->m_Deck.mDeckPushCard(queenSpade);
     //Kız kartları eklendi
 }
 
-bool PlayedGame::makeDecision(QLabel* status,Pod &pod)
+void PlayedGame::setPodsCanvas()
 {
+    // POD 1 için gerekli canvaslar ayarlandı
+    this->pod_canvas1[0] = ui->pod1_canvas_1; ui->pod1_canvas_1->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas1[1] = ui->pod1_canvas_2; ui->pod1_canvas_2->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas1[2] = ui->pod1_canvas_3; ui->pod1_canvas_3->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas1[3] = ui->pod1_canvas_4; ui->pod1_canvas_4->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas1[4] = ui->pod1_canvas_5; ui->pod1_canvas_5->setStyleSheet("QLabel {background: transparent;}");
 
-    if( pod.getScore() == 21)
+    // POD 2 için gerekli canvaslar ayarlandı
+    this->pod_canvas2[0] = ui->pod2_canvas_1; ui->pod2_canvas_1->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas2[1] = ui->pod2_canvas_2; ui->pod2_canvas_2->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas2[2] = ui->pod2_canvas_3; ui->pod2_canvas_3->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas2[3] = ui->pod2_canvas_4; ui->pod2_canvas_4->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas2[4] = ui->pod2_canvas_5; ui->pod2_canvas_5->setStyleSheet("QLabel {background: transparent;}");
+
+    // POD 3 için gerekli canvaslar ayarlandı
+    this->pod_canvas3[0] = ui->pod3_canvas_1; ui->pod3_canvas_1->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas3[1] = ui->pod3_canvas_2; ui->pod3_canvas_2->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas3[2] = ui->pod3_canvas_3; ui->pod3_canvas_3->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas3[3] = ui->pod3_canvas_4; ui->pod3_canvas_4->setStyleSheet("QLabel {background: transparent;}");
+    this->pod_canvas3[4] = ui->pod3_canvas_5; ui->pod3_canvas_5->setStyleSheet("QLabel {background: transparent;}");
+
+}
+
+bool PlayedGame::makeDecision(QLabel* label,Pod &pod)
+{
+    //bu fonksiyon hangi durumlarda oyuncunun kazanıp kazanmadığına karar verecektir.
+    if( this->isWin(pod))//pod 21 oldu mu?
     {
-        status->setText("You Gained a Score!!");
-        status->repaint();
-        while(1)
-        {
-            sleep(1);
-            break;
-        }
-        status->setText("get a Score");
-        status->repaint();
+        this->ShowWin(label);
         this->increaseMainScore(1);
         return true;
     }
-    else if(pod.getScore() > 21 || (pod.getScore() < 21 && pod.getPodCount() == 5))
+    else if(this->isBlackJack(pod))//black jack yakalandı mı?
     {
-        status->setText("Failed!!");
-        status->repaint();
-        while(1)
-        {
-
-            sleep(1);
-            break;
-        }
-        status->setText("get a Score");
-        status->repaint();
+        this->ShowWin(label);
+        this->increaseMainScore(1);
+        return true;
+    }
+    else if(this->isLose(pod))//podda score 21 geçti mi veya 5 kart oldu mu?(5 kart olup 21i bulan kazanır)
+    {
+        this->ShowLose(label);
         return true;
     }
     return false;
 
+}
+
+bool PlayedGame::isBlackJack(Pod &pod)
+{
+    if(pod.getPodCount() == 2)
+    {
+        QRegularExpression as_regex("(- AS)(.*)"),specialCard_regex("(Special)(.*)"); //AS ve Special kart için regex.
+        QRegularExpressionMatch match_specailCard = specialCard_regex.match(pod.getPodCards()[0].getCardType());//special kart başta mı?
+        QRegularExpressionMatch match_as = as_regex.match(pod.getPodCards()[1].getCardName()); // ardından as gelmiş mi?
+
+        if(match_as.hasMatch() && match_specailCard.hasMatch()) //regex ile matchleniyor mu?
+        {
+            return true;
+        }
+    }
+    //blackjack olma şartı: destede 2 kart olmalı ve önce özel kart(papaz,kız) sonrasında ise as gelmeli
+    return false;
+}
+
+bool PlayedGame::isWin(Pod &pod)
+{
+    if( pod.getScore() == 21)//pod 21 oldu mu?
+    {
+        return true;
+    }
+    return false;
+}
+
+bool PlayedGame::isLose(Pod &pod)
+{
+    if(pod.getScore() > 21 || (pod.getScore() < 21 && pod.getPodCount() == 5))//podda score 21 geçti mi veya 5 kart oldu mu?(5 kart olup 21i bulan kazanır//Blackjack kuralı)
+    {
+
+        return true;
+    }
+    return false;
+}
+
+void PlayedGame::ShowWin(QLabel *label)
+{
+    label->setText("Gained a Score!");
+    label->repaint();
+    while(1)
+    {
+        sleep(1);
+        break;
+    }
+    label->setText("get a Score");
+    label->repaint();
+}
+
+void PlayedGame::ShowLose(QLabel *label)
+{
+    label->setText("Failed!!");
+    label->repaint();
+    while(1)
+    {
+        sleep(1);
+        break;
+    }
+    label->setText("get a Score");
+    label->repaint();
+}
+
+void PlayedGame::drawPod(int pod)
+{
+    if(pod == 1)
+    {
+        for(int i=0; i< this->first_pod.getPodCount(); i++)
+        {
+            QString absolutePath = first_pod.getPodCards().at(i).getCardPath();
+            pod_canvas1[i]->setStyleSheet("QLabel {background: url(:" + absolutePath + ") no-repeat center center fixed;background-position: 100px 20px;}");
+            pod_canvas1[i]->repaint();
+        }
+    }
+    else if(pod == 2)
+    {
+        for(int j=0; j< this->second_pod.getPodCount(); j++)
+        {
+            QString absolutePath = second_pod.getPodCards().at(j).getCardPath();
+            pod_canvas2[j]->setStyleSheet("QLabel {background: url(:" + absolutePath + ") no-repeat center center fixed;background-position: 100px 20px;}");
+            pod_canvas2[j]->repaint();
+        }
+    }
+    else if(pod == 3)
+    {
+        for(int k=0; k< this->third_pod.getPodCount(); k++)
+        {
+            QString absolutePath = third_pod.getPodCards().at(k).getCardPath();
+            pod_canvas3[k]->setStyleSheet("QLabel {background: url(:" + absolutePath + ") no-repeat center center fixed;background-position: 100px 20px;}");
+            pod_canvas3[k]->repaint();
+        }
+    }
+}
+
+void PlayedGame::clearPod(int pod)
+{
+    if(pod == 1)
+    {
+        ui->pod1_canvas_1->setStyleSheet("QLabel {background: transparent;}"); ui->pod1_canvas_1->repaint();
+        ui->pod1_canvas_2->setStyleSheet("QLabel {background: transparent;}"); ui->pod1_canvas_2->repaint();
+        ui->pod1_canvas_3->setStyleSheet("QLabel {background: transparent;}"); ui->pod1_canvas_3->repaint();
+        ui->pod1_canvas_4->setStyleSheet("QLabel {background: transparent;}"); ui->pod1_canvas_4->repaint();
+        ui->pod1_canvas_5->setStyleSheet("QLabel {background: transparent;}"); ui->pod1_canvas_5->repaint();
+    }
+    else if(pod == 2)
+    {
+        ui->pod2_canvas_1->setStyleSheet("QLabel {background: transparent;}"); ui->pod2_canvas_1->repaint();
+        ui->pod2_canvas_2->setStyleSheet("QLabel {background: transparent;}"); ui->pod2_canvas_2->repaint();
+        ui->pod2_canvas_3->setStyleSheet("QLabel {background: transparent;}"); ui->pod2_canvas_3->repaint();
+        ui->pod2_canvas_4->setStyleSheet("QLabel {background: transparent;}"); ui->pod2_canvas_4->repaint();
+        ui->pod2_canvas_5->setStyleSheet("QLabel {background: transparent;}"); ui->pod2_canvas_5->repaint();
+    }
+    else if(pod == 3)
+    {
+        ui->pod3_canvas_1->setStyleSheet("QLabel {background: transparent;}"); ui->pod3_canvas_1->repaint();
+        ui->pod3_canvas_2->setStyleSheet("QLabel {background: transparent;}"); ui->pod3_canvas_2->repaint();
+        ui->pod3_canvas_3->setStyleSheet("QLabel {background: transparent;}"); ui->pod3_canvas_3->repaint();
+        ui->pod3_canvas_4->setStyleSheet("QLabel {background: transparent;}"); ui->pod3_canvas_4->repaint();
+        ui->pod3_canvas_5->setStyleSheet("QLabel {background: transparent;}"); ui->pod3_canvas_5->repaint();
+
+    }
 }
 
 bool PlayedGame::isGameFinish()
@@ -281,7 +419,7 @@ void PlayedGame::on_takeCardButton_clicked()
         QString absolutePath = pulled_Card->getCardPath();
         qDebug() << pulled_Card->getCardName();
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + absolutePath + ") 0 0 0 0 stretch stretch; }");
-        ui->deck_counter->setText("ALL DECK \nSİZE:" + QString::number(this->m_Deck.getDeckCount()));
+        ui->deck_counter->setText("  ALL    DECK \n      SİZE: " + QString::number(this->m_Deck.getDeckCount()));
         ui->deck_image->repaint();
     }
 }
@@ -292,20 +430,20 @@ void PlayedGame::on_hitButton_1_clicked()
     if(this->pulled_Card->getCardType() != "Start")
     {
         this->first_pod.mPodPushCard(*this->pulled_Card);
-        ui->pod1_canvas->setText(this->first_pod.getPodCardsName());
-        qDebug() << first_pod.getScore() << first_pod.getPodCount();
+//        qDebug() << first_pod.getScore() << first_pod.getPodCount();
         *this->pulled_Card = *this->start_Card;
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + this->pulled_Card->getCardPath() + ") 0 0 0 0 stretch stretch; }");
         ui->pod1_score->setText("Score: " + QString::number(first_pod.getScore()));
         ui->deck_image->repaint();
         ui->pod1_score->repaint();
+        this->drawPod(1);
         if(this->makeDecision(ui->Status_1,this->first_pod))
         {
             this->first_pod.resetPod();
-            ui->pod1_canvas->clear();
+            this->clearPod(1);
             ui->pod1_score->setText("Score: 0");
         }
-        ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
+        ui->mainScore_value->setText("Score: " + QString::number(this->getMainScore()));
         if(this->isGameFinish())
         {
             //TODO Oyunun bittiğine dair geri bildirim verilip yeniden başlatılacak
@@ -323,18 +461,18 @@ void PlayedGame::on_hitButton_2_clicked()
     if(this->pulled_Card->getCardType() != "Start")
     {
         this->second_pod.mPodPushCard(*this->pulled_Card);
-        ui->pod2_canvas->setText(this->second_pod.getPodCardsName());
-        qDebug() << second_pod.getScore() << second_pod.getPodCount();
+//        qDebug() << second_pod.getScore() << second_pod.getPodCount();
         *this->pulled_Card = *this->start_Card;
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + this->pulled_Card->getCardPath() + ") 0 0 0 0 stretch stretch; }");
         ui->pod2_score->setText("Score: " + QString::number(second_pod.getScore()));
         ui->deck_image->repaint();
         ui->pod2_score->repaint();
+        this->drawPod(2);
         if(this->makeDecision(ui->Status_2,second_pod))
         {
             this->second_pod.resetPod();
-            ui->pod2_canvas->clear();
-            ui->pod2_score->setText("Score: ");
+            this->clearPod(2);
+            ui->pod2_score->setText("Score: 0");
         }
         ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
         if(this->isGameFinish())
@@ -356,18 +494,18 @@ void PlayedGame::on_hitButton_3_clicked()
     if(this->pulled_Card->getCardType() != "Start")
     {
         this->third_pod.mPodPushCard(*this->pulled_Card);
-        ui->pod3_canvas->setText(this->third_pod.getPodCardsName());
         qDebug() << third_pod.getScore() << third_pod.getPodCount();
         *this->pulled_Card = *this->start_Card;
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + this->pulled_Card->getCardPath() + ") 0 0 0 0 stretch stretch; }");
         ui->pod3_score->setText("Score: " + QString::number(third_pod.getScore()));
         ui->deck_image->repaint();
         ui->pod3_score->repaint();
+        this->drawPod(3);
         if(this->makeDecision(ui->Status_3,third_pod))
         {
             this->third_pod.resetPod();
-            ui->pod3_canvas->clear();
-            ui->pod3_score->setText("Score: ");
+            this->clearPod(3);
+            ui->pod3_score->setText("Score: 0");
         }
         ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
         if(this->isGameFinish())
