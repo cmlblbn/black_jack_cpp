@@ -25,6 +25,7 @@ private slots:
     void on_playButton_clicked();
 
 private:
+    QString player_name = "UNKNOWN";
     Ui::MainWindow *ui;
     PlayedGame *play;
 };

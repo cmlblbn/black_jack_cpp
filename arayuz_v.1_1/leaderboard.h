@@ -15,8 +15,11 @@ public:
     explicit leaderboard(QWidget *parent = nullptr);
     ~leaderboard();
 
+
 private:
+
     Ui::leaderboard *ui;
+
 };
 
 #endif // LEADERBOARD_H

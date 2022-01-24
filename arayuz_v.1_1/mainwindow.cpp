@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->lineEdit->setStyleSheet("QLineEdit { background: rgb(255, 255, 255); selection-background-color: rgb(233, 99, 0); color: rgb(0,0,0); }");
+    ui->player_name_input->setStyleSheet("QLineEdit { background: rgb(255, 255, 255); selection-background-color: rgb(233, 99, 0); color: rgb(0,0,0); }");
     ui->playButton->setAttribute(Qt::WA_TranslucentBackground);
     ui->quitButton->setAttribute(Qt::WA_TranslucentBackground);
 }
@@ -19,14 +19,14 @@ MainWindow::~MainWindow()
 }
 
 
-
-
-
-
 void MainWindow::on_playButton_clicked()
 {
+    if(!ui->player_name_input->text().isEmpty())
+    {
+        this->player_name = ui->player_name_input->text();
+    }
     this->hide();
-    play = new PlayedGame();
+    play = new PlayedGame(this->player_name);
     play->show();
 }
 

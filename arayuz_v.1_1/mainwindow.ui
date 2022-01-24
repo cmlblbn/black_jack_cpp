@@ -10,6 +10,18 @@
     <height>676</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::ActionsContextMenu</enum>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -28,7 +40,6 @@
     </property>
     <property name="font">
      <font>
-      <family>Algerian</family>
       <pointsize>20</pointsize>
      </font>
     </property>
@@ -39,7 +50,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="player_name_input">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -276,14 +287,23 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <pointsize>12</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
+    <property name="cursor">
+     <cursorShape>OpenHandCursor</cursorShape>
+    </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-border-color: rgb(255, 255, 255);
+     <string notr="true">
+background:rgb(255,255,255);
 color: rgb(255, 255, 255);
-</string>
+font: 12pt &quot;Algerian&quot;;
+border-radius:10px;</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="playButton">
@@ -294,6 +314,9 @@ color: rgb(255, 255, 255);
       <width>150</width>
       <height>55</height>
      </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>OpenHandCursor</cursorShape>
     </property>
     <property name="styleSheet">
      <string notr="true">background: transparent;</string>
