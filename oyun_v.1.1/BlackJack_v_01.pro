@@ -15,7 +15,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     playedgame.cpp \
-    pod.cpp
+    pod.cpp \
+    result.cpp
 
 HEADERS += \
     card.h \
@@ -23,12 +24,14 @@ HEADERS += \
     leaderboard.h \
     mainwindow.h \
     playedgame.h \
-    pod.h
+    pod.h \
+    result.h
 
 FORMS += \
     leaderboard.ui \
     mainwindow.ui \
-    playedgame.ui
+    playedgame.ui \
+    result.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -485,7 +485,7 @@ border-left-color: rgb(255, 167, 161);
           SIZE:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="finishButton">
+  <widget class="QPushButton" name="restartButton">
    <property name="geometry">
     <rect>
      <x>650</x>
@@ -508,7 +508,7 @@ font: 16pt &quot;Algerian&quot;;
 </string>
    </property>
    <property name="text">
-    <string>FINISH GAME</string>
+    <string>RESTART GAME</string>
    </property>
   </widget>
   <widget class="QPushButton" name="leaderBoardButton">

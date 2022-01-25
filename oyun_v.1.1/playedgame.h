@@ -1,11 +1,12 @@
 #ifndef PLAYEDGAME_H
 #define PLAYEDGAME_H
 
-#include <QWidget>
 #include "leaderboard.h"
 #include "deck.h"
 #include "card.h"
 #include "pod.h"
+#include "result.h"
+#include <QWidget>
 #include <QLabel>
 #include <QTimer>
 #include <QTime>
@@ -21,6 +22,12 @@ class PlayedGame : public QWidget
 public:
     explicit PlayedGame(QString player_name,QWidget *parent = nullptr);
     ~PlayedGame();
+    void setMainScore(int const mainScore){this->m_mainScore = mainScore;}
+    void increaseMainScore(int score){this->m_mainScore = this->m_mainScore + score;}
+    int getMainScore(){return this->m_mainScore;}
+    void setSecond(int second){this->second = second;}
+    int getSecond(){return this->second;}
+    //getter and setter, class basit özellikleri için yazıldı sadece
     void setAllButtonDisabled();
     void setAllButtonEnabled();
     void setGameDeck();
@@ -32,9 +39,6 @@ public:
     void setPods();
     void setPodsCanvas();
     bool makeDecision(QLabel* label,Pod &pod);
-    void setMainScore(int const mainScore){this->m_mainScore = mainScore;}
-    void increaseMainScore(int score){this->m_mainScore = this->m_mainScore + score;}
-    int getMainScore(){return this->m_mainScore;}
     bool isBlackJack(Pod &pod);
     bool isWin(Pod &pod);
     bool isLose(Pod &pod);
@@ -43,10 +47,11 @@ public:
     void drawPod(int pod);
     void clearPod(int pod);
     bool isGameFinish();
+    void showResult();
     void restartGame();
 
 private slots:
-    void on_finishButton_clicked();
+    void on_restartButton_clicked();
 
     void on_leaderBoardButton_clicked();
 
@@ -64,6 +69,7 @@ private slots:
 
 private:
     int second = 0;
+    int m_mainScore = 0;
     QTimer* timer;
     Card *start_Card = new Card("Start","Start Card",0,"/res/resources/res/cards/00.png");
     Card *pulled_Card = new Card("Start","Start Card",0,"/res/resources/res/cards/00.png");
@@ -73,11 +79,11 @@ private:
     Pod third_pod = Pod("üçüncü Pod");
     QLabel *pod_canvas1[5];
     QLabel *pod_canvas2[5];
-    QLabel *pod_canvas3[5];
-    int m_mainScore = 0;
+    QLabel *pod_canvas3[5];    
     QString player_name;
     Ui::PlayedGame *ui;
     leaderboard *leader_board;
+    Result *result;
 
 };
 

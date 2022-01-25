@@ -14,7 +14,6 @@ PlayedGame::PlayedGame(QString player_name,QWidget *parent) :
     ui->setupUi(this);
     this->setGameDeck();
     this->setPodsCanvas();
-    qDebug() << this->m_Deck.getDeckCount();
     ui->deck_counter->setText("  ALL    DECK \n      SİZE: " + QString::number(this->m_Deck.getDeckCount()));
     ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
     this->setAllButtonDisabled();
@@ -29,7 +28,6 @@ PlayedGame::~PlayedGame()
 
 void PlayedGame::setAllButtonDisabled()
 {
-   ui->finishButton->setDisabled(true);
    ui->takeCardButton->setDisabled(true);
    ui->hitButton_1->setDisabled(true);
    ui->hitButton_2->setDisabled(true);
@@ -38,7 +36,6 @@ void PlayedGame::setAllButtonDisabled()
 
 void PlayedGame::setAllButtonEnabled()
 {
-    ui->finishButton->setEnabled(true);
     ui->takeCardButton->setEnabled(true);
     ui->hitButton_1->setEnabled(true);
     ui->hitButton_2->setEnabled(true);
@@ -242,6 +239,7 @@ bool PlayedGame::makeDecision(QLabel* label,Pod &pod)
     }
     else if(this->isBlackJack(pod))//black jack yakalandı mı?
     {
+        pod.setScore(21);
         this->ShowWin(label);
         this->increaseMainScore(1);
         return true;
@@ -295,6 +293,7 @@ void PlayedGame::ShowWin(QLabel *label)
 {
     label->setText("Gained a Score!");
     label->repaint();
+
     while(1)
     {
         sleep(1);
@@ -386,6 +385,16 @@ bool PlayedGame::isGameFinish()
     return false;
 }
 
+void PlayedGame::showResult()
+{
+    this->result = new Result(this->getMainScore(),this->getSecond());
+    this->result->show();
+    disconnect(this->timer,SIGNAL(timeout()),this,SLOT(startTimer()));
+    this->timer->stop();
+    // TODO veriler data-base'ye burada eklenecek.
+
+}
+
 void PlayedGame::restartGame()
 {
     this->~PlayedGame();
@@ -393,9 +402,9 @@ void PlayedGame::restartGame()
     game->show();
 }
 
-void PlayedGame::on_finishButton_clicked()
+void PlayedGame::on_restartButton_clicked()
 {
-    // TODO veriler data-base'ye eklenip oyun yeniden baslatilacak
+
 
     // new game
     this->restartGame();
@@ -404,7 +413,7 @@ void PlayedGame::on_finishButton_clicked()
 
 void PlayedGame::on_leaderBoardButton_clicked()
 {
-
+    //TODO Veritabanı bilgileri çekilecek.
 
     leader_board = new leaderboard();
     leader_board->show();
@@ -416,8 +425,7 @@ void PlayedGame::on_takeCardButton_clicked()
     {
         *this->pulled_Card = m_Deck.mDeckPullCard();
         this->m_Deck.UpdateDeckCount();
-        QString absolutePath = pulled_Card->getCardPath();
-        qDebug() << pulled_Card->getCardName();
+        QString absolutePath = pulled_Card->getCardPath();        
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + absolutePath + ") 0 0 0 0 stretch stretch; }");
         ui->deck_counter->setText("  ALL    DECK \n      SİZE: " + QString::number(this->m_Deck.getDeckCount()));
         ui->deck_image->repaint();
@@ -430,28 +438,33 @@ void PlayedGame::on_hitButton_1_clicked()
     if(this->pulled_Card->getCardType() != "Start")
     {
         this->first_pod.mPodPushCard(*this->pulled_Card);
-//        qDebug() << first_pod.getScore() << first_pod.getPodCount();
         *this->pulled_Card = *this->start_Card;
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + this->pulled_Card->getCardPath() + ") 0 0 0 0 stretch stretch; }");
-        ui->pod1_score->setText("Score: " + QString::number(first_pod.getScore()));
-        ui->deck_image->repaint();
-        ui->pod1_score->repaint();
-        this->drawPod(1);
-        if(this->makeDecision(ui->Status_1,this->first_pod))
+        ui->deck_image->repaint(); // çekilen kart artık deckde değil, görsel olarak kapatılmalı.
+
+        if(this->isBlackJack(this->first_pod))//Black jack yakalandığında arayüz bugu oluşuyor. Bu yüzden if else yapısı ile güncellendi.
+        {
+            this->first_pod.setScore(21);
+            ui->pod1_score->setText("Score: " + QString::number(this->first_pod.getScore()));
+            ui->pod1_score->repaint();
+        }
+        else
+        {
+            ui->pod1_score->setText("Score: " + QString::number(this->first_pod.getScore()));
+            ui->pod1_score->repaint();
+            this->drawPod(1);
+        }
+
+        this->drawPod(1); //Kartlar poda çiziliyor.
+
+        if(this->makeDecision(ui->Status_1,this->first_pod))// win-lose durumları kontrol ediliyor.
         {
             this->first_pod.resetPod();
             this->clearPod(1);
             ui->pod1_score->setText("Score: 0");
-        }
-        ui->mainScore_value->setText("Score: " + QString::number(this->getMainScore()));
-        if(this->isGameFinish())
-        {
-            //TODO Oyunun bittiğine dair geri bildirim verilip yeniden başlatılacak
-            qDebug() << "Oyun bitti, Scoreunuz: " << this->getMainScore();
-            while(1)
-            {sleep(2);break;}
-            this->restartGame();
-        }
+        }   //Win veya lose alınsın pod temizlenmeli.
+
+        ui->mainScore_value->setText("Score: " + QString::number(this->getMainScore())); // main score güncelleniyor.
     }
 }
 
@@ -461,30 +474,33 @@ void PlayedGame::on_hitButton_2_clicked()
     if(this->pulled_Card->getCardType() != "Start")
     {
         this->second_pod.mPodPushCard(*this->pulled_Card);
-//        qDebug() << second_pod.getScore() << second_pod.getPodCount();
         *this->pulled_Card = *this->start_Card;
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + this->pulled_Card->getCardPath() + ") 0 0 0 0 stretch stretch; }");
-        ui->pod2_score->setText("Score: " + QString::number(second_pod.getScore()));
-        ui->deck_image->repaint();
-        ui->pod2_score->repaint();
-        this->drawPod(2);
-        if(this->makeDecision(ui->Status_2,second_pod))
+        ui->deck_image->repaint();// çekilen kart artık deckde değil, görsel olarak kapatılmalı.
+
+        if(this->isBlackJack(this->second_pod))//Black jack yakalandığında arayüz bugu oluşuyor. Bu yüzden if else yapısı ile güncellendi.
+        {
+            this->second_pod.setScore(21);
+            ui->pod2_score->setText("Score: " + QString::number(this->second_pod.getScore()));
+            ui->pod2_score->repaint();
+        }
+        else
+        {
+            ui->pod2_score->setText("Score: " + QString::number(this->second_pod.getScore()));
+            ui->pod2_score->repaint();
+        }
+
+
+        this->drawPod(2); //Kartlar poda çiziliyor
+
+        if(this->makeDecision(ui->Status_2,second_pod))// win-lose durumları kontrol ediliyor.
         {
             this->second_pod.resetPod();
             this->clearPod(2);
             ui->pod2_score->setText("Score: 0");
-        }
+        }   //Win veya lose alınsın pod temizlenmeli.
+
         ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
-        if(this->isGameFinish())
-        {
-            //TODO Oyunun bittiğine dair geri bildirim verilip yeniden başlatılacak
-            qDebug() << "Oyun bitti, Scoreunuz: " << this->getMainScore();
-            while(1)
-            {sleep(2);break;}
-            this->restartGame();
-        }
-
-
     }
 }
 
@@ -494,28 +510,33 @@ void PlayedGame::on_hitButton_3_clicked()
     if(this->pulled_Card->getCardType() != "Start")
     {
         this->third_pod.mPodPushCard(*this->pulled_Card);
-        qDebug() << third_pod.getScore() << third_pod.getPodCount();
         *this->pulled_Card = *this->start_Card;
         ui->deck_image->setStyleSheet("QLabel {border-image: url(:" + this->pulled_Card->getCardPath() + ") 0 0 0 0 stretch stretch; }");
-        ui->pod3_score->setText("Score: " + QString::number(third_pod.getScore()));
-        ui->deck_image->repaint();
-        ui->pod3_score->repaint();
-        this->drawPod(3);
-        if(this->makeDecision(ui->Status_3,third_pod))
+        ui->deck_image->repaint();// çekilen kart artık deckde değil, görsel olarak kapatılmalı.
+
+        if(this->isBlackJack(this->third_pod))//Black jack yakalandığında arayüz bugu oluşuyor. Bu yüzden if else yapısı ile güncellendi.
+        {
+            this->third_pod.setScore(21);
+            ui->pod3_score->setText("Score: " + QString::number(this->third_pod.getScore()));
+            ui->pod3_score->repaint();
+        }
+        else
+        {
+            ui->pod3_score->setText("Score: " + QString::number(this->third_pod.getScore()));
+            ui->pod3_score->repaint();
+            this->drawPod(1);
+        }
+
+        this->drawPod(3); //Kartlar poda çiziliyor
+
+        if(this->makeDecision(ui->Status_3,third_pod))// win-lose durumları kontrol ediliyor.
         {
             this->third_pod.resetPod();
             this->clearPod(3);
             ui->pod3_score->setText("Score: 0");
-        }
+        }   //Win veya lose alınsın pod temizlenmeli.
+
         ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
-        if(this->isGameFinish())
-        {
-            //TODO Oyunun bittiğine dair geri bildirim verilip yeniden başlatılacak
-            qDebug() << "Oyun bitti, Scoreunuz: " << this->getMainScore();
-            while(1)
-            {sleep(2);break;}
-            this->restartGame();
-        }
     }
 
 }
@@ -524,16 +545,20 @@ void PlayedGame::on_hitButton_3_clicked()
 void PlayedGame::on_startButton_clicked()
 {
     this->setAllButtonEnabled();
+    ui->startButton->setDisabled(true);
     this->timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(startTimer()));
+    connect(this->timer,SIGNAL(timeout()),this,SLOT(startTimer()));
     timer->start(1000);
 }
 
 void PlayedGame::startTimer()
 {
     this->second++;
-
     ui->time->setText("Geçen Süre: " + QString::number(second) + " sn");
     ui->time->repaint();
+    if(this->isGameFinish())
+    {
+        this->showResult();
+    }
 }
 
