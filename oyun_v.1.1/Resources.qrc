@@ -55,5 +55,6 @@
         <file>resources/res/cards/XD.png</file>
         <file>resources/res/cards/XH.png</file>
         <file>resources/res/cards/XS.png</file>
+        <file>resources/res/cards/icon31.png</file>
     </qresource>
 </RCC>

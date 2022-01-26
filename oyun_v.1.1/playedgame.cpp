@@ -18,6 +18,7 @@ PlayedGame::PlayedGame(QString player_name,QWidget *parent) :
     ui->mainScore_value->setText("Score: " +QString::number(this->getMainScore()));
     this->setAllButtonDisabled();
     this->player_name = player_name;
+    this->setWindowTitle(QString("BlackJack"));
 }
 
 PlayedGame::~PlayedGame()
@@ -416,6 +417,8 @@ void PlayedGame::on_leaderBoardButton_clicked()
     //TODO Veritabanı bilgileri çekilecek.
 
     leader_board = new leaderboard();
+    leader_board->setWindowTitle(QString("BlackJack"));
+    leader_board->setWindowIcon(QIcon(":/res/resources/res/cards/icon31.png"));
     leader_board->show();
 }
 
