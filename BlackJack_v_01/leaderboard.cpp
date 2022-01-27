@@ -10,6 +10,7 @@ leaderboard::leaderboard(QString database_data,QWidget *parent) :
     {
         ui->leaderBoardName->setText("Bir sorun oluştu!");
         ui->leaderBoardName->repaint();
+        this->setWindowTitle(QString("BlackJack"));
     }
 }
 

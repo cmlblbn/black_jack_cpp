@@ -10,10 +10,12 @@ Result::Result(int mainScore,int second,QWidget *parent) :
     this->mainScore = mainScore;
     this->second = second;
     ui->message_label->setText("Tebrikler! Saniye:" + QString::number(this->second) +" Score:" + QString::number(this->mainScore) + "\nOyunu yeniden başlatmak için Restart buttonuna basınız");
+    this->setWindowTitle(QString("Result"));
 }
 
 Result::~Result()
 {
     delete ui;
+
 }
 

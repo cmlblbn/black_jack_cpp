@@ -390,6 +390,7 @@ void PlayedGame::showResult()
 {
     this->db.insertData(this->getPlayerName(),this->getMainScore(),this->getSecond());
     this->result = new Result(this->getMainScore(),this->getSecond());
+    result->setWindowIcon(QIcon(":/res/resources/res/cards/icon31.png"));
     this->result->show();
     disconnect(this->timer,SIGNAL(timeout()),this,SLOT(startTimer()));
     this->timer->stop();
@@ -401,6 +402,7 @@ void PlayedGame::restartGame()
 {
     this->~PlayedGame();
     PlayedGame *game = new PlayedGame(this->player_name);
+    game->setWindowIcon(QIcon(":/res/resources/res/cards/icon31.png"));
     game->show();
 }
 
