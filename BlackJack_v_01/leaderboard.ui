@@ -7,11 +7,8 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>550</height>
+    <height>571</height>
    </rect>
-  </property>
-  <property name="cursor">
-   <cursorShape>BlankCursor</cursorShape>
   </property>
   <property name="windowTitle">
    <string/>
@@ -23,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>55</x>
-     <y>50</y>
+     <y>30</y>
      <width>220</width>
      <height>50</height>
     </rect>
@@ -46,7 +43,7 @@ border-top-left-radius:15px;</string>
    <property name="geometry">
     <rect>
      <x>275</x>
-     <y>50</y>
+     <y>30</y>
      <width>220</width>
      <height>50</height>
     </rect>
@@ -68,7 +65,7 @@ color:rgb(255,255,255);</string>
    <property name="geometry">
     <rect>
      <x>495</x>
-     <y>50</y>
+     <y>30</y>
      <width>200</width>
      <height>50</height>
     </rect>
@@ -86,13 +83,13 @@ color:rgb(255,255,255);</string>
     <string>         TIME</string>
    </property>
   </widget>
-  <widget class="QLabel" name="leaderBoardData">
+  <widget class="QLabel" name="leaderBoardName">
    <property name="geometry">
     <rect>
      <x>55</x>
-     <y>100</y>
-     <width>640</width>
-     <height>400</height>
+     <y>80</y>
+     <width>221</width>
+     <height>451</height>
     </rect>
    </property>
    <property name="font">
@@ -106,19 +103,23 @@ color:rgb(255,255,255);</string>
     <string notr="true">background-color: rgb(68, 68, 68);
 color:rgb(255,255,255);
 font: 12pt &quot;Algerian&quot;;
-border-bottom-right-radius: 50px;
+border: 5px solid black;
+
 
 </string>
    </property>
    <property name="text">
-    <string>    ahmet mehmet                           57                               189 sn</string>
+    <string>ahmet</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
   </widget>
   <widget class="QLabel" name="seperate_l">
    <property name="geometry">
     <rect>
      <x>270</x>
-     <y>100</y>
+     <y>80</y>
      <width>8</width>
      <height>400</height>
     </rect>
@@ -159,7 +160,7 @@ background-color: rgb(68, 68, 68);</string>
    <property name="geometry">
     <rect>
      <x>460</x>
-     <y>100</y>
+     <y>80</y>
      <width>8</width>
      <height>400</height>
     </rect>
@@ -194,6 +195,73 @@ background-color: rgb(68, 68, 68);</string>
 |
 |
 </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="leaderBoardScore">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>80</y>
+     <width>191</width>
+     <height>451</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(68, 68, 68);
+color:rgb(255,255,255);
+font: 12pt &quot;Algerian&quot;;
+border: 5px solid black;
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>9</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="leaderBoardTime">
+   <property name="geometry">
+    <rect>
+     <x>454</x>
+     <y>80</y>
+     <width>241</width>
+     <height>451</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(68, 68, 68);
+color:rgb(255,255,255);
+font: 12pt &quot;Algerian&quot;;
+border: 5px solid black;
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>5 sn</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
    </property>
   </widget>
  </widget>

@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     card.cpp \
+    database.cpp \
     deck.cpp \
     leaderboard.cpp \
     main.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     card.h \
+    database.h \
     deck.h \
     leaderboard.h \
     mainwindow.h \

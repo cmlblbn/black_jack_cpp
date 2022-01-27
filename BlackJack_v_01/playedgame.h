@@ -6,6 +6,7 @@
 #include "card.h"
 #include "pod.h"
 #include "result.h"
+#include "database.h"
 #include <QWidget>
 #include <QLabel>
 #include <QTimer>
@@ -27,6 +28,7 @@ public:
     int getMainScore(){return this->m_mainScore;}
     void setSecond(int second){this->second = second;}
     int getSecond(){return this->second;}
+    QString getPlayerName(){return this->player_name;}
     //getter and setter, class basit özellikleri için yazıldı sadece
     void setAllButtonDisabled();
     void setAllButtonEnabled();
@@ -84,6 +86,7 @@ private:
     Ui::PlayedGame *ui;
     leaderboard *leader_board;
     Result *result;
+    Database db = Database("deneme.sqlite","BlackJack_v_01");
 
 };
 

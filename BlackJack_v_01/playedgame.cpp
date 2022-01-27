@@ -388,11 +388,12 @@ bool PlayedGame::isGameFinish()
 
 void PlayedGame::showResult()
 {
+    this->db.insertData(this->getPlayerName(),this->getMainScore(),this->getSecond());
     this->result = new Result(this->getMainScore(),this->getSecond());
     this->result->show();
     disconnect(this->timer,SIGNAL(timeout()),this,SLOT(startTimer()));
     this->timer->stop();
-    // TODO veriler data-base'ye burada eklenecek.
+
 
 }
 
@@ -414,9 +415,11 @@ void PlayedGame::on_restartButton_clicked()
 
 void PlayedGame::on_leaderBoardButton_clicked()
 {
-    //TODO Veritabanı bilgileri çekilecek.
 
-    leader_board = new leaderboard();
+
+    //Database db = Database("deneme.sqlite","BlackJack_v_01");
+    QString leaderboard_data = this->db.getData();
+    leader_board = new leaderboard(leaderboard_data);
     leader_board->setWindowTitle(QString("BlackJack"));
     leader_board->setWindowIcon(QIcon(":/res/resources/res/cards/icon31.png"));
     leader_board->show();

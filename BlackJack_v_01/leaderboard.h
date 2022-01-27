@@ -12,9 +12,11 @@ class leaderboard : public QWidget
     Q_OBJECT
 
 public:
-    explicit leaderboard(QWidget *parent = nullptr);
+    explicit leaderboard(QString database_data,QWidget *parent = nullptr);
     ~leaderboard();
 
+    //Verileri düzgün şekilde ekrana yükleyecek
+    bool loadData(QString data);
 
 private:
 

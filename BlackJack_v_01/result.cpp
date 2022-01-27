@@ -9,7 +9,7 @@ Result::Result(int mainScore,int second,QWidget *parent) :
     ui->setupUi(this);
     this->mainScore = mainScore;
     this->second = second;
-    ui->message_label->setText("Tebrikler! Saniye:" + QString::number(this->second) +" Score:" + QString::number(this->mainScore) + " Oyunu yeniden \nbaşlatmak için Restart buttonuna basınız");
+    ui->message_label->setText("Tebrikler! Saniye:" + QString::number(this->second) +" Score:" + QString::number(this->mainScore) + "\nOyunu yeniden başlatmak için Restart buttonuna basınız");
 }
 
 Result::~Result()
